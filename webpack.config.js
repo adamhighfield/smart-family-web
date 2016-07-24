@@ -1,14 +1,13 @@
 var webpack = require('webpack');
 var path = require('path');
 
-var publicPath = 'http://localhost:3000/';
-var hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';
-
 module.exports = {
-  entry: './public/javascripts/main.js',
+  entry: [
+    './public/javascripts/main.js',
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+  ],
   output: {
     path: __dirname + '/build/',
-    publicPath: './build/',
     filename: 'bundle.js'
   },
   module: {
@@ -17,5 +16,10 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'babel-loader',
     }]
-  }
+  },
+  plugins: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
+  ]
 };
